@@ -8,7 +8,7 @@ Ce projet génère des visualisations 3D interactives de différents types de so
 - **1-solitons sombres** (comparaison pour différentes valeurs de θ)
 - **3-solitons sombres** (collision multiple)
 - **2-solitons brillants** (collision binaire)
-- **Solitons mixtes** (brillants + sombres)
+- **Solitons mixtes** (brillants)
 
 ## 📚 Référence
 
@@ -43,21 +43,6 @@ Basé sur le document: **Two_Components_NLSE**
 └── Simu resultats/                         # Dossier des résultats
     ├── *.html                              # Fichiers Plotly interactifs
     └── *.png                               # Images Matplotlib statiques
-```
-
-## 🚀 Installation
-
-### Prérequis
-```bash
-Python 3.7+
-numpy
-matplotlib
-plotly
-```
-
-### Installation des dépendances
-```bash
-pip install numpy matplotlib plotly
 ```
 
 ## 💻 Utilisation
@@ -217,13 +202,6 @@ Phi2 = 0.0            # Phase initiale 2
 
 ### Densité Minimale vs θ (1-soliton sombre)
 
-| θ     | Densité min | Profondeur du creux |
-|-------|-------------|---------------------|
-| π/4   | 0.8536      | 0.1464              |
-| π/2   | 0.5000      | 0.5000              |
-| 3π/4  | 0.1464      | 0.8536              |
-| π     | 0.0000      | 1.0000              |
-
 **Formule:** `Profondeur = sin²(θ/2)`
 
 ### Vitesses des Solitons
@@ -237,63 +215,6 @@ v = -λ/μ
 ```
 v ≈ -2·Re(Ω) / Re(Θ)
 ```
-
-## 🐛 Dépannage
-
-### "No module named 'plotly'"
-```bash
-pip install plotly
-```
-
-### Les graduations ne s'affichent pas
-Vérifiez que `ticks='inside'` ou `ticks='outside'` est défini dans les paramètres d'axes.
-
-### Le fond gris est toujours visible
-Assurez-vous que:
-```python
-showbackground=False,
-bgcolor='rgba(0,0,0,0)'
-```
-
-### La collision commence après t=0
-Utilisez un temps négatif:
-```python
-generate_plotly_plots(tmin=-20.0)
-```
-
-### Fichier HTML trop lourd
-Réduisez la résolution:
-```python
-generate_plotly_plots(Nx=512, Nt=150)  # Au lieu de 1024
-```
-
-## 📖 Documentation Complémentaire
-
-### Fichiers Guides Inclus
-
-- **MATPLOTLIB_VS_PLOTLY.txt**: Comparaison des deux bibliothèques
-- **MODIFICATIONS_POLICE_FOND.txt**: Explication des modifications de style
-- **GUIDE_GRADUATIONS_AXES.txt**: Comment ajouter/modifier les graduations
-- **GUIDE_TEMPS_NEGATIF.txt**: Comment utiliser les temps négatifs
-- **EXPLICATION_FORMULE_LAMBDA.txt**: Explication de la formule Λ = μx + λt + φ
-
-## 🎓 Pour les Présentations
-
-### Recommandations
-1. **Utilisez Plotly** pour les présentations orales (interactif)
-2. **Utilisez Matplotlib** pour les rapports écrits (statique, léger)
-3. **Temps négatif** pour montrer toute la dynamique de collision
-4. **Police augmentée** (size=28 pour titres) pour la lisibilité
-5. **Fond transparent** pour intégration dans diaporamas
-
-### Ouvrir les Fichiers HTML
-1. Double-cliquez sur le fichier `.html`
-2. S'ouvre dans votre navigateur par défaut
-3. Utilisez la souris pour:
-   - **Rotation**: Clic gauche + glisser
-   - **Zoom**: Molette souris
-   - **Pan**: Shift + clic + glisser
-   - **Hover**: Survolez pour voir les valeurs
 
 ## 🔬 Cas d'Usage Scientifiques
 
@@ -317,40 +238,14 @@ generate_plotly_plots(Nx=512, Nt=150)  # Au lieu de 1024
 
 | Configuration     | Nx×Nt      | Temps     |
 |-------------------|------------|-----------|
-| Basse résolution  | 256×100    | ~5s       |
-| Moyenne résolution| 512×150    | ~15s      |
-| Haute résolution  | 1024×1024  | ~2-3 min  |
-
-**CPU:** Intel i5 ou équivalent
-
-### Taille des Fichiers
-
-| Type  | Format | Taille typique |
-|-------|--------|----------------|
-| Plotly| HTML   | 1-2 MB         |
-| Matplotlib | PNG | 300-500 KB    |
-
-## 🤝 Contribution
-
-Pour modifier ou améliorer le code:
-
-1. Consultez le PDF de référence pour les équations
-2. Testez avec basse résolution d'abord (Nx=256, Nt=100)
-3. Vérifiez que les limites physiques sont respectées:
-   - Densité ≥ 0 pour solitons sombres
-   - Densité ≥ 0 pour solitons brillants
+| Basse résolution  | 256×100    | ~1s       |
+| Moyenne résolution| 512×150    | ~1s       |
+| Haute résolution  | 1024×1024  | ~3s       |
 
 ## 📝 Licence
 
 Projet académique - M1 Ingénierie 4  
 R&D - Simulation de Solitons
-
-## ✉️ Contact
-
-Pour questions ou bugs:
-- Consultez d'abord les fichiers GUIDE_*.txt
-- Vérifiez les paramètres dans le code
-- Testez avec résolution réduite
 
 ## 🔗 Références
 
@@ -358,22 +253,7 @@ Pour questions ou bugs:
 2. Document PDF: "Two_Components_NLSE" (fourni avec le projet)
 3. Plotly Documentation: https://plotly.com/python/
 
-## 📅 Historique des Versions
 
-### Version Actuelle (Mars 2025)
-- ✅ Support Plotly 3D interactif
-- ✅ Temps négatifs pour voir collisions complètes
-- ✅ Police augmentée et fond transparent
-- ✅ Graduations sur tous les axes
-- ✅ 4 types de solitons implémentés
-
-### Améliorations Futures Possibles
-- [ ] Animation temporelle (frames)
-- [ ] Comparaison côte-à-côte Matplotlib/Plotly
-- [ ] Export en format vidéo
-- [ ] Interface graphique (GUI)
-- [ ] Analyse automatique des collisions
 
 ---
 
-**Bon calcul de solitons! 🌊**
