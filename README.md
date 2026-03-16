@@ -254,6 +254,40 @@ R&D - Simulation de Solitons
 3. Plotly Documentation: https://plotly.com/python/
 
 
+## 👥 Auteurs
+
+**Maxime Foucher**  
+*Projet de Recherche & Développement - LYRIDS - ECE Lyon, 2025/2026*
+
+**Superviseurs** :  
+- **M. Laurent Delisle** (Professeur chercheur ECE Paris)  
+- **M. Amine Jaouadi** (Professeur chercheur ECE Paris)
+
+---
+
+## 📧 Contact
+
+Pour toute question ou suggestion :  
+📧 **maxime.foucher@edu.ece.fr / myximefoucher@outlook.fr**
+
+---
+
+## 📝 Licence
+
+Ce projet est sous licence **MIT**. 
+
+---
+
+## 🙏 Remerciements
+
+- **Jean Dalibard** (Collège de France) pour les notes de cours sur les BEC
+- **Edgar Figueiras et al.** (Université de Vigo) pour le code de base BPM
+- **Communauté NumPy/SciPy** pour les outils de calcul scientifique
+- **Laurent DELISLE et Amine JAOUADI**
+
+---
+
+
 
 ---
 
