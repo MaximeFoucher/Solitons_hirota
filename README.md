@@ -1,2 +1,0 @@
-# Solitons_hirota
-
