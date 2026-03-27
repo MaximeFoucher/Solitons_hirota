@@ -99,7 +99,16 @@ def generate_3d_plots(xmax=20.0, tmax=20.0, Nx=1024, Nt=1024, tmin=-20.0):  # �
         y=tvec, 
         z=density_data,
         colorscale='Jet',
-        colorbar=dict(title="|Ψ|²", thickness=20)
+        colorbar=dict(
+            title="|Ψ|²",
+            thickness=15,          
+            len=0.8,               # Longueur réduite à 80% de la hauteur du graphique
+            x=1.15,                # Décalage vers la droite (1.0 est le bord par défaut)
+            y=0.5,                 # Centrage vertical
+            yanchor='middle',      # Point d'ancrage au milieu
+            title_font=dict(size=20),
+            tickfont=dict(size=16)            
+            )
     )])
  
     # Mise à jour du layout pour occuper tout l'écran
@@ -107,7 +116,7 @@ def generate_3d_plots(xmax=20.0, tmax=20.0, Nx=1024, Nt=1024, tmin=-20.0):  # �
         scene=dict(
             xaxis_title='x',
             yaxis_title='t',
-            zaxis_title='|Ψ|²',
+            # zaxis_title='|Ψ|²',
             aspectmode='manual',
             aspectratio=dict(x=2, y=1.5, z=1),
             camera=dict(eye=dict(x=1.5, y=-1.5, z=1.3)),
@@ -143,19 +152,14 @@ def generate_3d_plots(xmax=20.0, tmax=20.0, Nx=1024, Nt=1024, tmin=-20.0):  # �
                 tickcolor='black'
             ),
             zaxis=dict(
-                title_font=dict(size=28),
-                tickfont=dict(size=18),
-                showbackground=False,
-                showgrid=True,
-                gridcolor='rgba(200,200,200,0.2)',
-                showline=True,
-                linewidth=2,
-                linecolor='black',
-                ticks='inside',
-                dtick=0.1,
-                ticklen=8,
-                tickwidth=2,
-                tickcolor='black'
+                title='',                       # ← Pas de titre
+                showticklabels=False,           # ← Cache les valeurs (0.0, 0.5, 1.0...)
+                showbackground=True,           # ← Pas de fond gris
+                showgrid=False,                 # ← Pas de grille verticale
+                showline=False,                 # ← Pas de ligne d'axe
+                zeroline=False,                 # ← Pas de ligne zéro
+                showspikes=False,               # ← Pas de pics au survol
+                visible=True
             ),
             bgcolor='rgba(0,0,0,0)'
         ),
@@ -167,7 +171,15 @@ def generate_3d_plots(xmax=20.0, tmax=20.0, Nx=1024, Nt=1024, tmin=-20.0):  # �
  
     # Sauvegarde
     output_path = 'C:\\Users\\myxim\\Ecole\\Ecole\\M1 Inge4\\R&D\\Code devoir bonus\\bpm-master\\bpm-master\\Simu resultats\\solitons_sombres_collision_3_plotly.html'
-    fig.write_html(output_path)
+    config = {
+        'editable': True,
+        'toImageButtonOptions': {
+            'format': 'png',
+            'filename': 'collision_3_solitons_sombres',
+            'scale': 10  # Haute définition pour votre poster
+        }
+    }
+    fig.write_html(output_path, config=config)
     
     print(f"✓ Fichier sauvegardé : {output_path}")
     return density_data, x, tvec

@@ -90,7 +90,7 @@ def generate_plotly_plots(xmax=50.0, tmax=30.0, Nx=1024, Nt=1024):
     print(" CALCUL: 2 SOLITONS BRILLANTS (VERSION 3D EXCLUSIVE)")
     print("="*70)
     
-    x = np.linspace(-xmax, xmax, Nx)
+    x = np.linspace(-15.0, 55.0, Nx)
     tvec = np.linspace(0, tmax, Nt)
     density_data = np.zeros((Nt, Nx))
     
@@ -101,7 +101,16 @@ def generate_plotly_plots(xmax=50.0, tmax=30.0, Nx=1024, Nt=1024):
     fig = go.Figure(data=[go.Surface(
         x=x, y=tvec, z=density_data,
         colorscale='Jet',
-        colorbar=dict(title="|Ψ|²", thickness=20)
+        colorbar=dict(
+            title="|Ψ|²",
+            thickness=15,          # Épaisseur fine
+            len=0.8,               # Taille réduite pour ne pas dépasser
+            x=1.05,                # Positionnée juste après le bord droit (1.0)
+            y=0.5,
+            yanchor='middle',
+            title_font=dict(size=20),
+            tickfont=dict(size=16)
+            )
     )])
 
     # Mise à jour du layout pour utiliser toute la page
@@ -109,7 +118,7 @@ def generate_plotly_plots(xmax=50.0, tmax=30.0, Nx=1024, Nt=1024):
         scene=dict(
             xaxis_title='x',
             yaxis_title='t',
-            zaxis_title='|Ψ|²',
+            #zaxis_title='|Ψ|²',
             aspectmode='manual',
             aspectratio=dict(x=2, y=1.5, z=1),
             camera=dict(eye=dict(x=1.5, y=-1.5, z=1.3)),
@@ -145,19 +154,14 @@ def generate_plotly_plots(xmax=50.0, tmax=30.0, Nx=1024, Nt=1024):
                 tickcolor='black'               # ← Couleur des barres
             ),
             zaxis=dict(
-                title_font=dict(size=28),       # ← LIGNE 154: Police titre Z
-                tickfont=dict(size=18),         # ← LIGNE 155: Police valeurs Z
-                showbackground=False,           # ← LIGNE 156: Enlève fond gris
-                showgrid=True,
-                gridcolor='rgba(200,200,200,0.2)',
-                showline=True,
-                linewidth=2,
-                linecolor='black',
-                ticks='inside',                # ← Affiche les petites barres
-                dtick=0.1,                       # ← Graduation tous les 0.1
-                ticklen=8,                      # ← Longueur des barres
-                tickwidth=2,                    # ← Épaisseur des barres
-                tickcolor='black'               # ← Couleur des barres
+                title='',                       # ← Pas de titre
+                showticklabels=False,           # ← Cache les valeurs (0.0, 0.5, 1.0...)
+                showbackground=True,           # ← Pas de fond gris
+                showgrid=False,                 # ← Pas de grille verticale
+                showline=False,                 # ← Pas de ligne d'axe
+                zeroline=False,                 # ← Pas de ligne zéro
+                showspikes=False,               # ← Pas de pics au survol
+                visible=True
             ),
             bgcolor='rgba(0,0,0,0)'  # ← LIGNE 163: Fond complètement transparent
         ),
@@ -169,7 +173,15 @@ def generate_plotly_plots(xmax=50.0, tmax=30.0, Nx=1024, Nt=1024):
 
     # Sauvegarde vers votre chemin spécifique
     output_path = 'C:\\Users\\myxim\\Ecole\\Ecole\\M1 Inge4\\R&D\\Code devoir bonus\\bpm-master\\bpm-master\\Simu resultats\\2_solitons_brillants_collision_plotly.html'
-    fig.write_html(output_path)
+    config = {
+        'editable': True,
+        'toImageButtonOptions': {
+            'format': 'png',
+            'filename': 'collision_2_solitons_brillants',
+            'scale': 10  # Haute définition pour votre poster
+        }
+    }
+    fig.write_html(output_path, config=config)
     
     return density_data, x, tvec
 
@@ -198,3 +210,4 @@ if __name__ == "__main__":
     density, x, t = generate_plotly_plots()
     
     print("\n✓ RÉSULTAT: Fichier sauvegardé sous '2_solitons_brillants_collision_plotly.html'")
+

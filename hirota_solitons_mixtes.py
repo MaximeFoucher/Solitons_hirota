@@ -28,6 +28,14 @@ except Exception as e:
 # PARAMÈTRES DU FORMALISME DE HIROTA
 # ============================================================================
 
+# Pour cas 1.1 et 2
+xmax = 20.0      # Position maximale
+tmax = 20.0      # Temps maximal
+tmin = -tmax     # Temps minimal (peut être négatif pour voir l'évolution avant la collision)
+
+Nx = 1024        # Nombre de points en x
+Nt = 1024        # Nombre de points en t
+
 gamma = 1.0       # γ
 # cas 1
 # kappa = 1.0       # κ
@@ -43,6 +51,9 @@ N = 2             # Dimension du système vectoriel
 # cas 1.2
 # Theta1 = 1.0 - 2.0j   # Θ₁
 # Theta2 = 2.0 + 1.0j   # Θ₂
+# xmax = 5.0      # Position maximale
+# tmax = -2.0      # Temps maximal
+# tmin = -tmax     # Temps minimal (peut être négatif pour voir l'évolution avant la collision)
 # cas 2
 Theta1 = - 0.25 - 2.0j   # Θ₁
 Theta2 = 0.25 + 2.0j   # Θ₂
@@ -107,7 +118,7 @@ def compute_density(x, t):
 # GÉNÉRATION DU GRAPHIQUE PLOTLY (3D UNIQUEMENT)
 # ============================================================================
  
-def generate_plotly_plots(xmax=15.0, tmax=10.0, Nx=1024, Nt=1024, tmin=-10.0):  # ← LIGNE 104: Ajout tmin=-10.0
+def generate_plotly_plots(xmax, tmax, Nx, Nt, tmin):  # ← LIGNE 104: Ajout tmin=-10.0
     """Génère le graphique 3D uniquement en plein écran
     
     Args:
@@ -132,7 +143,16 @@ def generate_plotly_plots(xmax=15.0, tmax=10.0, Nx=1024, Nt=1024, tmin=-10.0):  
     fig = go.Figure(data=[go.Surface(
         x=x, y=tvec, z=density_data,
         colorscale='Jet',
-        colorbar=dict(title="|Ψ|²", thickness=20)
+        colorbar=dict(
+            title="|Ψ|²",
+            thickness=15,
+            len=0.8,
+            x=1.15,
+            y=0.5,
+            yanchor='middle',
+            title_font=dict(size=20),
+            tickfont=dict(size=16)
+        )
     )])
  
     # Mise à jour du layout pour utiliser toute la page
@@ -140,7 +160,7 @@ def generate_plotly_plots(xmax=15.0, tmax=10.0, Nx=1024, Nt=1024, tmin=-10.0):  
         scene=dict(
             xaxis_title='x',
             yaxis_title='t',
-            zaxis_title='|Ψ|²',
+            # zaxis_title='|Ψ|²',
             aspectmode='manual',
             aspectratio=dict(x=2, y=1.5, z=1),
             camera=dict(eye=dict(x=1.5, y=-1.5, z=1.3)),
@@ -155,7 +175,9 @@ def generate_plotly_plots(xmax=15.0, tmax=10.0, Nx=1024, Nt=1024, tmin=-10.0):  
                 linewidth=2,
                 linecolor='black',
                 ticks='inside',
-                dtick=5,
+                # dtick=10,
+                dtick = 5,  # ← Graduations tous les 5 pour le cas 2
+                # dtick = 2, #pour le cas 1.2 avec tmax=-2
                 ticklen=5,
                 tickwidth=2,
                 tickcolor='black'
@@ -170,25 +192,22 @@ def generate_plotly_plots(xmax=15.0, tmax=10.0, Nx=1024, Nt=1024, tmin=-10.0):  
                 linewidth=2,
                 linecolor='black',
                 ticks='inside',
-                dtick=5,  # ← Graduations tous les 5 (fonctionne avec temps négatif)
+                # dtick=10,  # ← Graduations tous les 10 pour le cas 1.1
+                dtick = 5,  # ← Graduations tous les 5 pour le cas 2
+                # dtick = 1, #pour le cas 1.2 avec tmax=-2
                 ticklen=5,
                 tickwidth=2,
                 tickcolor='black'
             ),
             zaxis=dict(
-                title_font=dict(size=28),
-                tickfont=dict(size=18),
-                showbackground=False,
-                showgrid=True,
-                gridcolor='rgba(200,200,200,0.2)',
-                showline=True,
-                linewidth=2,
-                linecolor='black',
-                ticks='inside',
-                dtick=0.1,
-                ticklen=5,
-                tickwidth=2,
-                tickcolor='black'
+                title='',                       # ← Pas de titre
+                showticklabels=False,           # ← Cache les valeurs (0.0, 0.5, 1.0...)
+                showbackground=True,           # ← Pas de fond gris
+                showgrid=False,                 # ← Pas de grille verticale
+                showline=False,                 # ← Pas de ligne d'axe
+                zeroline=False,                 # ← Pas de ligne zéro
+                showspikes=False,               # ← Pas de pics au survol
+                visible=True
             ),
             bgcolor='rgba(0,0,0,0)'
         ),
@@ -199,8 +218,16 @@ def generate_plotly_plots(xmax=15.0, tmax=10.0, Nx=1024, Nt=1024, tmin=-10.0):  
     )
  
     # Sauvegarde
-    output_path = 'C:\\Users\\myxim\\Ecole\\Ecole\\M1 Inge4\\R&D\\Code devoir bonus\\bpm-master\\bpm-master\\Simu resultats\\solitons_brillants_mixtes_plotly.html'
-    fig.write_html(output_path)
+    output_path = f'C:\\Users\\myxim\\Ecole\\Ecole\\M1 Inge4\\R&D\\Code devoir bonus\\bpm-master\\bpm-master\\Simu resultats\\solitons_brillants_mixtes_plotly_kappa={kappa}_theta1={Theta1}_theta2={Theta2}.html'
+    config = {
+        'editable': True,
+        'toImageButtonOptions': {
+            'format': 'png',
+            'filename': f'solitons_brillants_mixtes_kappa={kappa}_theta1={Theta1}_theta2={Theta2}',
+            'scale': 10  # Haute définition pour votre poster
+        }
+    }
+    fig.write_html(output_path, config=config)
     
     print(f"✓ Fichier sauvegardé : {output_path}")
     return density_data
@@ -227,7 +254,7 @@ if __name__ == "__main__":
     # AVANT: generate_plotly_plots()
     # APRÈS:  generate_plotly_plots(tmin=-10.0)
     
-    generate_plotly_plots(tmin=-10.0)  # ← LIGNE 224: Commence à t = -10
+    generate_plotly_plots(xmax=xmax, tmax=tmax, Nx=Nx, Nt=Nt, tmin=tmin)  # ← LIGNE 224: Commence à t = -10
     
     # Autres exemples possibles:
     # generate_plotly_plots(tmin=-15.0)           # Encore plus tôt
